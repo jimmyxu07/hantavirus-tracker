@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-05-12T03:27:01Z",
+  "generated_at": "2026-05-12T14:57:34Z",
   "outbreaks": [
     {
       "country": "Argentina",
-      "count": 11,
+      "count": 10,
       "latest_title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION",
       "latest_url": "https://www.promedmail.org/?s=hantavirus",
       "latest_date": "1 day ago"
@@ -14,7 +14,7 @@
       "country": "Argentina",
       "lat": -38.4,
       "lng": -63.6,
-      "count": 11,
+      "count": 10,
       "latest_title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION",
       "latest_url": "https://www.promedmail.org/?s=hantavirus",
       "latest_date": "1 day ago",
@@ -223,10 +223,10 @@
     "vesselfinder_url": "https://www.vesselfinder.com/vessels/details/9818709",
     "marinetraffic_url": "https://www.marinetraffic.com/en/ais/details/ships/shipid:5873599/mmsi:244327000/imo:9818709/vessel:HONDIUS",
     "position": {
-      "lat": 29.3438,
-      "lng": -15.43724,
+      "lat": 31.46173,
+      "lng": -14.73513,
       "heading_deg": 17.0,
-      "fetched_at": "2026-05-12T03:26:59Z"
+      "fetched_at": "2026-05-12T14:57:32Z"
     },
     "counts": {
       "cases_total": 7,
@@ -240,7 +240,7 @@
       "as_of": "2026-05-04",
       "source": "WHO DON599",
       "source_url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON599",
-      "fetched_at": "2026-05-12T03:27:01Z"
+      "fetched_at": "2026-05-12T14:57:34Z"
     }
   },
   "cdc_snapshot": {
@@ -318,12 +318,6 @@
     },
     {
       "title": "HANTAVIRUS (03) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, AUMENTO DE CASOS",
-      "url": "https://www.promedmail.org/?s=hantavirus",
-      "source": "ProMED-mail",
-      "published": "2026-05-05"
-    },
-    {
-      "title": "HANTAVIRUS (02) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, CASOS SOSPECHOSOS,",
       "url": "https://www.promedmail.org/?s=hantavirus",
       "source": "ProMED-mail",
       "published": "2026-05-05"
