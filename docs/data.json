@@ -1,0 +1,332 @@
+{
+  "generated_at": "2026-05-12T03:27:01Z",
+  "outbreaks": [
+    {
+      "country": "Argentina",
+      "count": 11,
+      "latest_title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION",
+      "latest_url": "https://www.promedmail.org/?s=hantavirus",
+      "latest_date": "1 day ago"
+    }
+  ],
+  "country_index": [
+    {
+      "country": "Argentina",
+      "lat": -38.4,
+      "lng": -63.6,
+      "count": 11,
+      "latest_title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION",
+      "latest_url": "https://www.promedmail.org/?s=hantavirus",
+      "latest_date": "1 day ago",
+      "items": [
+        {
+          "title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "1 day ago"
+        },
+        {
+          "title": "HANTAVIRUS - ARGENTINA (18): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, POST-SHIP CASES AND SURVEILLANCE",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "1 day ago"
+        },
+        {
+          "title": "HANTAVIRUS (06) \u2013 ARGENTINA: BROTE EN ALTAMAR, INFORMACI\u00d3N SOBRE EL PACIENTE CERO",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "2 days ago"
+        },
+        {
+          "title": "HANTAVIRUS (05) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISI\u00d3N MEDIANTE CONTACTO NO ESTRECHO",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "4 days ago"
+        },
+        {
+          "title": "HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "4 days ago"
+        },
+        {
+          "title": "HANTAVIRUS - ARGENTINA (17): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, WHO RESPONSE, POST-SHIP CASE",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "4 days ago"
+        }
+      ]
+    },
+    {
+      "country": "Taiwan",
+      "lat": 23.7,
+      "lng": 121.0,
+      "count": 1,
+      "latest_title": "HANTAVIRUS - TAIWAN (03): (TAIPEI) RAT INFESTATION, HUMAN, FATAL, NORMAL RANGE, RODENT CONTROL",
+      "latest_url": "https://www.promedmail.org/?s=hantavirus",
+      "latest_date": "2 days ago",
+      "items": [
+        {
+          "title": "HANTAVIRUS - TAIWAN (03): (TAIPEI) RAT INFESTATION, HUMAN, FATAL, NORMAL RANGE, RODENT CONTROL",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "2 days ago"
+        }
+      ]
+    },
+    {
+      "country": "South Africa",
+      "lat": -30.6,
+      "lng": 22.9,
+      "count": 1,
+      "latest_title": "HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS",
+      "latest_url": "https://www.promedmail.org/?s=hantavirus",
+      "latest_date": "4 days ago",
+      "items": [
+        {
+          "title": "HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS",
+          "url": "https://www.promedmail.org/?s=hantavirus",
+          "source": "ProMED-mail",
+          "published": "4 days ago"
+        }
+      ]
+    }
+  ],
+  "spread_arcs": [
+    {
+      "from": "Argentina",
+      "to": "Texas",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        31.5,
+        -99.3
+      ],
+      "label": "TX residents on cruise, returned"
+    },
+    {
+      "from": "Argentina",
+      "to": "Nebraska",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        41.5,
+        -99.8
+      ],
+      "label": "Federal quarantine \u2014 Nebraska Medicine"
+    },
+    {
+      "from": "Argentina",
+      "to": "New Jersey",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        40.2,
+        -74.5
+      ],
+      "label": "NJDOH monitoring air-travel contacts"
+    },
+    {
+      "from": "Argentina",
+      "to": "California",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        36.8,
+        -119.4
+      ],
+      "label": "Passengers monitored on return"
+    },
+    {
+      "from": "Argentina",
+      "to": "Arizona",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        34.2,
+        -111.7
+      ],
+      "label": "Passengers monitored on return"
+    },
+    {
+      "from": "Argentina",
+      "to": "Chile",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        -35.7,
+        -71.5
+      ],
+      "label": "Cruise stopover"
+    },
+    {
+      "from": "Argentina",
+      "to": "Brazil",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        -14.2,
+        -51.9
+      ],
+      "label": "Cruise stopover"
+    },
+    {
+      "from": "Argentina",
+      "to": "Canary Islands",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        28.3,
+        -15.5
+      ],
+      "label": "Hondius port of disembarkation"
+    },
+    {
+      "from": "Argentina",
+      "to": "South Africa",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        -30.6,
+        22.9
+      ],
+      "label": "Contacts monitored on stopover"
+    }
+  ],
+  "vessel": {
+    "name": "MV Hondius",
+    "operator": "Oceanwide Expeditions",
+    "imo": "9818709",
+    "mmsi": "244327000",
+    "flag": "Netherlands",
+    "departed_from": "Ushuaia, Argentina",
+    "departed_at": "2026-04-01",
+    "tracker_url": "https://www.cruisemapper.com/ships/MV-Hondius-1624",
+    "vesselfinder_url": "https://www.vesselfinder.com/vessels/details/9818709",
+    "marinetraffic_url": "https://www.marinetraffic.com/en/ais/details/ships/shipid:5873599/mmsi:244327000/imo:9818709/vessel:HONDIUS",
+    "position": {
+      "lat": 29.3438,
+      "lng": -15.43724,
+      "heading_deg": 17.0,
+      "fetched_at": "2026-05-12T03:26:59Z"
+    },
+    "counts": {
+      "cases_total": 7,
+      "cases_confirmed": 2,
+      "cases_suspected": 5,
+      "deaths": 3,
+      "critical": 1,
+      "on_board": 147,
+      "passengers": 88,
+      "crew": 59,
+      "as_of": "2026-05-04",
+      "source": "WHO DON599",
+      "source_url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON599",
+      "fetched_at": "2026-05-12T03:27:01Z"
+    }
+  },
+  "cdc_snapshot": {
+    "as_of": "2023-12-31",
+    "total_cases": 890,
+    "hps_cases": 859,
+    "non_pulmonary_cases": 31,
+    "case_fatality_rate_pct": 35,
+    "median_age": 38,
+    "pct_male": 62,
+    "pct_west_of_mississippi": 94,
+    "surveillance_start": 1993,
+    "source_url": "https://www.cdc.gov/hantavirus/data-research/cases/index.html"
+  },
+  "items": [
+    {
+      "title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-11"
+    },
+    {
+      "title": "HANTAVIRUS - ARGENTINA (18): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, POST-SHIP CASES AND SURVEILLANCE",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-11"
+    },
+    {
+      "title": "HANTAVIRUS - TAIWAN (03): (TAIPEI) RAT INFESTATION, HUMAN, FATAL, NORMAL RANGE, RODENT CONTROL",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-10"
+    },
+    {
+      "title": "HANTAVIRUS (06) \u2013 ARGENTINA: BROTE EN ALTAMAR, INFORMACI\u00d3N SOBRE EL PACIENTE CERO",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-10"
+    },
+    {
+      "title": "HANTAVIRUS (05) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISI\u00d3N MEDIANTE CONTACTO NO ESTRECHO",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-08"
+    },
+    {
+      "title": "HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-08"
+    },
+    {
+      "title": "HANTAVIRUS - ARGENTINA (17): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, WHO RESPONSE, POST-SHIP CASE",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-08"
+    },
+    {
+      "title": "HANTAVIRUS - ARGENTINA (16): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, UPDATE",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-07"
+    },
+    {
+      "title": "HANTAVIRUS (04) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, CONFIRMACI\u00d3N DE VIRUS ANDES",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-07"
+    },
+    {
+      "title": "HANTAVIRUS - ARGENTINA (15): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, WHO SUMMARY",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-06"
+    },
+    {
+      "title": "HANTAVIRUS (03) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, AUMENTO DE CASOS",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-05"
+    },
+    {
+      "title": "HANTAVIRUS (02) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, CASOS SOSPECHOSOS,",
+      "url": "https://www.promedmail.org/?s=hantavirus",
+      "source": "ProMED-mail",
+      "published": "2026-05-05"
+    }
+  ]
+}

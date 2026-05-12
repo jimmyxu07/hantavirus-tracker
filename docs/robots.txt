@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://hantavirusmap.site/sitemap.xml
