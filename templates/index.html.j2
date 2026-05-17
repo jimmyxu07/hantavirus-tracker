@@ -1,0 +1,73 @@
+{% if analytics_code %} {% endif %} {% if other_outbreaks %} {% endif %}
+
+HANTAVIRUS TRACKER
+Updated {{ build_time_human }} · rebuilds hourly
+{{ vessel_counts.cases_total }}
+CASES · HONDIUS
+{{ vessel_counts.deaths }}
+DEATHS · HONDIUS
+{{ active_country_count }}
+ACTIVE COUNTRIES
+{{ cdc.case_fatality_rate_pct }}%
+US CFR · CDC
+CLICK A MARKER · DRAG TO PAN · SCROLL TO ZOOM
+{% if vessel_position %}
+OUTBREAK VESSEL · LIVE COUNTERS
+{{ vessel_counts.cases_total }}
+TOTAL CASES
+{{ vessel_counts.cases_confirmed }}
+LAB CONFIRMED
+{{ vessel_counts.cases_suspected }}
+{% IF VESSEL_COUNTS.SOURCE == "ECDC" %}PROBABLE{% ELSE %}SUSPECTED{% ENDIF %}
+{{ vessel_counts.deaths }}
+DEATHS
+{{ vessel_counts.critical }}
+CRITICAL
+{{ vessel_counts.on_board }}
+ON BOARD ({{ VESSEL_COUNTS.PASSENGERS }}+{{ VESSEL_COUNTS.CREW }})
+{{ vessel.name }}
+{{ vessel.operator }} · IMO {{ vessel.imo }} · MMSI {{ vessel.mmsi }} · flag {{ vessel.flag }}
+Departed {{ vessel.departed_from }} on {{ vessel.departed_at }}.
+POSITION
+{{ "%.3f"|format(vessel_position.lat) }}°, {{ "%.3f"|format(vessel_position.lng) }}°
+{% if vessel_position.heading_deg is not none %}
+HEADING
+{{ vessel_position.heading_deg|round|int }}°
+{% endif %}
+LAST AIS FIX
+{{ vessel_position.fetched_at[:16].replace('T', ' ') }} UTC
+Counters as of {{ vessel_counts.as_of }}, scraped from {{ vessel_counts.source }}. Position from CruiseMapper; cross-check on VesselFinder / MarineTraffic. Refreshes hourly.
+{% endif %}
+PROMED-MAIL · OFFICIAL OUTBREAK ALERTS
+{% if promed_items %}
+{% for item in promed_items %}
+{{ item.title|unescape }}  {{ item.source }} {% if item.published_human %}· {{ item.published_human }} {% endif %}
+{% endfor %}
+{% else %}
+No ProMED items fetched in this build.
+{% endif %}
+CDC US SNAPSHOT
+{{ cdc.total_cases }}
+TOTAL CASES
+{{ cdc.case_fatality_rate_pct }}%
+FATALITY RATE
+{{ cdc.hps_cases }}
+HPS CASES
+{{ cdc.pct_west_of_mississippi }}%
+WEST OF MISS.
+Surveillance period {{ cdc.surveillance_start }} – {{ cdc.as_of[:4] }}. Median age {{ cdc.median_age }}, {{ cdc.pct_male }}% male. Source: CDC.
+ECDC · EU AGENCY PRESS RELEASES & ASSESSMENTS
+{% if ecdc_items %}
+{% for item in ecdc_items %}
+{{ item.title|unescape }}  {{ item.source }} {% if item.published_human %}· {{ item.published_human }} {% endif %}
+{% endfor %}
+{% else %}
+No ECDC hantavirus items in this build.
+{% endif %}
+NEWS & PRESS · LAST {{ NEWS_ITEMS|LENGTH }} ITEMS
+{% if news_items %}
+{% for item in news_items %}
+{{ item.title|unescape }}  {{ item.source }} {% if item.published_human %}· {{ item.published_human }} {% endif %}
+{% endfor %}
+{% endif %}
+About / disclaimer · Sources: ProMED-mail, ECDC, Google News, CDC HPS surveillance. Raw data: data.json. Code: GitHub. Not a medical resource — see CDC for guidance.
