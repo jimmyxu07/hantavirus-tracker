@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HantavirusMap.site — Live Outbreak Tracker & Map</title>
+<meta name="description" content="Live, hourly-updated map of hantavirus outbreaks and news from ProMED-mail, Google News, and CDC surveillance. Track active clusters, recent reports, and documented spread routes.">
+<link rel="canonical" href="https://hantavirusmap.site/">
+<meta property="og:title" content="HantavirusMap.site — Live Outbreak Tracker & Map">
+<meta property="og:description" content="Live, hourly-updated map of hantavirus outbreaks and news from ProMED-mail, Google News, and CDC.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hantavirusmap.site/">
+<meta property="og:image" content="https://hantavirusmap.site/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HantavirusMap.site">
+<meta name="twitter:description" content="Real-time hantavirus outbreak map: track MV Hondius cluster, global cases & news. and news.">
+<meta name="twitter:image" content="https://hantavirusmap.site/og.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><text y=%2250%22 font-size=%2256%22>&#129440;</text></svg>">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+<script data-goatcounter="https://hantavirusmap.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --panel: #131a23;
+    --panel-2: #1d2632;
+    --ink: #e8eef5;
+    --muted: #8a99ab;
+    --accent: #ff3b3b;
+    --accent-2: #ffb84d;
+    --good: #58c897;
+    --line: #28323e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: #7cc1ff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* ---------- HERO MAP ---------- */
+  .hero {
+    position: relative;
+    height: 70vh;
+    min-height: 520px;
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  #map {
+    height: 100%; width: 100%;
+    background: #0a1828;
+  }
+  .leaflet-container { background: #0a1828; outline: none; }
+  .leaflet-control-attribution {
+    background: rgba(10,14,20,.7) !important;
+    color: #6b7785 !important;
+    font-size: 10px !important;
+  }
+  .leaflet-control-attribution a { color: #8a99ab !important; }
+  .leaflet-control-zoom a {
+    background: rgba(20,28,38,.85) !important;
+    color: #e8eef5 !important;
+    border: 1px solid var(--line) !important;
+  }
+
+  /* HUD overlays */
+  .hud {
+    position: absolute; pointer-events: none; z-index: 500;
+  }
+  .hud-tl { top: 14px; left: 14px; }
+  .hud-tr { top: 14px; right: 14px; }
+  .hud-bl { bottom: 14px; left: 14px; }
+  .hud-br { bottom: 14px; right: 14px; }
+  .hud-bc {
+    bottom: 14px; left: 50%; transform: translateX(-50%);
+    color: var(--muted); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(10,14,20,.6); padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--line);
+  }
+
+  .title-card {
+    background: linear-gradient(135deg, rgba(20,28,38,.92), rgba(15,20,28,.85));
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 16px;
+    pointer-events: auto;
+  }
+  .title-card h1 {
+    margin: 0; font-size: 18px; letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .title-card h1 .dot {
+    display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--accent); margin-right: 8px;
+    box-shadow: 0 0 0 4px rgba(255,59,59,.18);
+    animation: pulse 2.4s ease-in-out infinite;
+    vertical-align: middle;
+  }
+  .title-card .sub {
+    color: var(--muted); font-size: 12px; margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-strip {
+    display: flex; gap: 8px; pointer-events: auto;
+  }
+  .stat-tile {
+    background: rgba(20,28,38,.92);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    min-width: 110px;
+  }
+  .stat-tile .v {
+    font-size: 22px; font-weight: 700; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-tile .v.alert { color: var(--accent); }
+  .stat-tile .v.warn  { color: var(--accent-2); }
+  .stat-tile .k {
+    color: var(--muted); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-top: 4px;
+  }
+
+  .legend {
+    background: rgba(20,28,38,.92);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--muted); font-size: 11px;
+    pointer-events: auto;
+  }
+  .legend .row { display: flex; align-items: center; gap: 8px; }
+  .legend .row + .row { margin-top: 4px; }
+  .legend .swatch {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255,59,59,.25);
+  }
+  .legend .swatch.arc {
+    width: 18px; height: 2px; border-radius: 0;
+    background: var(--accent-2); box-shadow: none;
+  }
+
+  /* Pulse marker (HTML divIcon) */
+  .pulse-marker {
+    position: relative;
+    width: 14px; height: 14px;
+  }
+  .pulse-marker .core {
+    position: absolute; inset: 0; margin: auto;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(255,59,59,.9);
+  }
+  .pulse-marker .ring {
+    position: absolute; inset: -8px; border-radius: 50%;
+    border: 2px solid var(--accent);
+    opacity: 0;
+    animation: ring 2.2s ease-out infinite;
+  }
+  .pulse-marker.large .core {
+    width: 14px; height: 14px;
+    box-shadow: 0 0 14px rgba(255,59,59,1);
+  }
+  .pulse-marker.large .ring { inset: -12px; border-width: 3px; }
+  @keyframes ring {
+    0%   { transform: scale(0.4); opacity: 0.9; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+
+  /* Ship marker — orange-ringed pulse with a ship glyph */
+  .ship-marker {
+    position: relative;
+    width: 28px; height: 28px;
+  }
+  .ship-marker .body {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255, 184, 77, 0.95);
+    color: #1a1208;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 12px rgba(255, 184, 77, 0.85);
+    font-size: 16px; font-weight: 900;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    line-height: 1;
+  }
+  .ship-marker .ring {
+    position: absolute; inset: -10px; border-radius: 50%;
+    border: 2px solid #ffb84d;
+    opacity: 0;
+    animation: ring 2.6s ease-out infinite;
+  }
+  .legend .swatch.ship {
+    background: #ffb84d; border: 2px solid #fff;
+    box-shadow: 0 0 6px rgba(255,184,77,.7);
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(255,59,59,.18); }
+    50%      { box-shadow: 0 0 0 10px rgba(255,59,59,0); }
+  }
+
+  /* Animated dashed spread arcs */
+  @keyframes dash {
+    to { stroke-dashoffset: -40; }
+  }
+  .leaflet-overlay-pane path.spread-arc {
+    stroke: var(--accent-2);
+    stroke-width: 2;
+    stroke-dasharray: 6 6;
+    fill: none;
+    opacity: 0.85;
+    animation: dash 1.6s linear infinite;
+  }
+
+  /* Popup styling */
+  .leaflet-popup-content-wrapper {
+    background: #131a23 !important;
+    color: var(--ink) !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 10px !important;
+  }
+  .leaflet-popup-tip { background: #131a23 !important; border: 1px solid var(--line) !important; }
+  .leaflet-popup-content { margin: 12px 14px !important; min-width: 240px; }
+  .popup-title {
+    font-weight: 700; font-size: 15px; margin-bottom: 6px;
+    color: var(--accent-2); text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .popup-meta { color: var(--muted); font-size: 11px; margin-bottom: 8px; }
+  .popup-list { padding: 0; margin: 0; list-style: none; }
+  .popup-list li { padding: 6px 0; border-top: 1px solid var(--line); font-size: 12px; }
+  .popup-list li:first-child { border-top: 0; }
+  .popup-list .src { color: var(--good); font-size: 10px; text-transform: uppercase; }
+
+  /* ---------- BELOW-MAP CONTENT ---------- */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 28px 20px 80px; }
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(12, 1fr); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .card h2 {
+    margin: 0 0 12px; font-size: 14px; letter-spacing: 0.04em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .span-12 { grid-column: span 12; }
+  .span-8  { grid-column: span 8; }
+  .span-4  { grid-column: span 4; }
+  @media (max-width: 800px) {
+    .span-8, .span-4 { grid-column: span 12; }
+    .stat-strip { flex-wrap: wrap; }
+    .stat-tile { min-width: 95px; padding: 8px 10px; }
+    .stat-tile .v { font-size: 18px; }
+    .hero { height: 60vh; min-height: 420px; }
+    .hud-bl { display: none; }
+  }
+
+  ul.items { list-style: none; padding: 0; margin: 0; }
+  ul.items li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  ul.items li:last-child { border-bottom: 0; }
+  ul.items .title { font-weight: 600; line-height: 1.35; }
+  ul.items .row {
+    display: flex; gap: 8px; align-items: center; margin-top: 4px;
+    color: var(--muted); font-size: 12px; flex-wrap: wrap;
+  }
+  ul.items .src { color: var(--good); }
+  ul.items .src.promed { color: var(--accent-2); }
+
+  .stats-mini { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stats-mini .stat { background: var(--panel-2); border-radius: 10px; padding: 12px 14px; }
+  .stats-mini .v { font-size: 22px; font-weight: 700; }
+  .stats-mini .k { color: var(--muted); font-size: 12px; text-transform: uppercase;
+                   letter-spacing: 0.06em; margin-top: 2px; }
+
+  footer {
+    margin-top: 40px; color: var(--muted); font-size: 12px;
+    border-top: 1px solid var(--line); padding-top: 16px;
+  }
+  footer a { color: var(--muted); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div id="map"></div>
+
+  <div class="hud hud-tl">
+    <div class="title-card">
+      <h1><span class="dot"></span>HantavirusMap.site</h1>
+      <div class="sub">Updated 2026-05-12 14:57 UTC · rebuilds hourly</div>
+    </div>
+  </div>
+
+  <div class="hud hud-tr">
+    <div class="stat-strip">
+      <div class="stat-tile"
+           title="Hondius cluster — confirmed + suspected — WHO DON599">
+        <div class="v warn">7</div>
+        <div class="k">Cases · Hondius</div>
+      </div>
+      <div class="stat-tile"
+           title="Hondius cluster fatalities — WHO DON599">
+        <div class="v alert">3</div>
+        <div class="k">Deaths · Hondius</div>
+      </div>
+      <div class="stat-tile"
+           title="Active countries with reports in last 60 days">
+        <div class="v">3</div>
+        <div class="k">Active countries</div>
+      </div>
+      <div class="stat-tile"
+           title="US case fatality rate, all hantavirus 1993–2023">
+        <div class="v alert">35%</div>
+        <div class="k">US CFR · CDC</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hud hud-bl">
+    <div class="legend">
+      <div class="row"><span class="swatch"></span>Reported activity (last 60d)</div>
+      <div class="row"><span class="swatch arc"></span>Documented spread route</div>
+      
+      <div class="row"><span class="swatch ship"></span>MV Hondius (outbreak vessel)</div>
+      
+    </div>
+  </div>
+
+  <div class="hud hud-bc">
+    Click a marker · drag to pan · scroll to zoom
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="grid">
+    
+    <div class="card span-12" style="border-color: #4a3a1e;
+         background: linear-gradient(135deg, #2a2113, #1a1812);">
+      <h2 style="color: var(--accent-2);">Outbreak vessel · live counters</h2>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 14px;">
+        <div class="stat-tile" style="background: rgba(255,184,77,0.08); border-color: #4a3a1e;">
+          <div class="v warn">7</div>
+          <div class="k">Total cases</div>
+        </div>
+        <div class="stat-tile" style="background: rgba(88,200,151,0.08); border-color: #1e4a35;">
+          <div class="v" style="color: var(--good);">2</div>
+          <div class="k">Lab confirmed</div>
+        </div>
+        <div class="stat-tile" style="background: rgba(255,184,77,0.05); border-color: #3a2e1a;">
+          <div class="v warn">5</div>
+          <div class="k">Suspected</div>
+        </div>
+        <div class="stat-tile" style="background: rgba(255,59,59,0.10); border-color: #4a1e22;">
+          <div class="v alert">3</div>
+          <div class="k">Deaths</div>
+        </div>
+        <div class="stat-tile" style="background: rgba(255,59,59,0.05); border-color: #3a1c1f;">
+          <div class="v alert">1</div>
+          <div class="k">Critical</div>
+        </div>
+        <div class="stat-tile">
+          <div class="v">147</div>
+          <div class="k">On board (88+59)</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 24px; flex-wrap: wrap; align-items: baseline; margin-bottom: 10px;">
+        <div style="flex: 1 1 240px;">
+          <div style="font-size: 22px; font-weight: 700;">
+            MV Hondius
+          </div>
+          <div style="color: var(--muted); font-size: 13px;">
+            Oceanwide Expeditions · IMO 9818709 · MMSI 244327000
+            · flag Netherlands
+          </div>
+          <div style="color: var(--muted); font-size: 13px; margin-top: 4px;">
+            Departed Ushuaia, Argentina on 2026-04-01.
+          </div>
+        </div>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;">Position</div>
+            <div style="font-size: 18px; font-variant-numeric: tabular-nums;">
+              31.462°,
+              -14.735°
+            </div>
+          </div>
+          
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;">Heading</div>
+            <div style="font-size: 18px; font-variant-numeric: tabular-nums;">
+              17°
+            </div>
+          </div>
+          
+          <div>
+            <div style="color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;">Last AIS fix</div>
+            <div style="font-size: 13px; color: var(--good);">
+              2026-05-12 14:57 UTC
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size: 12px; color: var(--muted);">
+        Counters as of 2026-05-04, scraped from
+        <a href="https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON599" target="_blank" rel="noopener">WHO DON599</a>.
+        Position from
+        <a href="https://www.cruisemapper.com/ships/MV-Hondius-1624" target="_blank" rel="noopener">CruiseMapper</a>;
+        cross-check on
+        <a href="https://www.vesselfinder.com/vessels/details/9818709" target="_blank" rel="noopener">VesselFinder</a>
+        / <a href="https://www.marinetraffic.com/en/ais/details/ships/shipid:5873599/mmsi:244327000/imo:9818709/vessel:HONDIUS" target="_blank" rel="noopener">MarineTraffic</a>.
+        Refreshes hourly.
+      </div>
+    </div>
+    
+
+    <div class="card span-8">
+      <h2>ProMED-mail · official outbreak alerts</h2>
+      
+      <ul class="items">
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>1 day ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS - ARGENTINA (18): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, POST-SHIP CASES AND SURVEILLANCE</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>1 day ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS - TAIWAN (03): (TAIPEI) RAT INFESTATION, HUMAN, FATAL, NORMAL RANGE, RODENT CONTROL</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>2 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS (06) – ARGENTINA: BROTE EN ALTAMAR, INFORMACIÓN SOBRE EL PACIENTE CERO</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>2 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS (05) – ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISIÓN MEDIANTE CONTACTO NO ESTRECHO</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>4 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>4 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS - ARGENTINA (17): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, WHO RESPONSE, POST-SHIP CASE</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>4 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS - ARGENTINA (16): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, UPDATE</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>5 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS (04) – ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, CONFIRMACIÓN DE VIRUS ANDES</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>5 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS - ARGENTINA (15): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, WHO SUMMARY</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>6 days ago</span>
+          </div>
+        </li>
+        
+        <li>
+          <div class="title">
+            <a href="https://www.promedmail.org/?s=hantavirus" target="_blank" rel="noopener">HANTAVIRUS (03) – ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, AUMENTO DE CASOS</a>
+          </div>
+          <div class="row">
+            <span class="src promed">ProMED-mail</span>
+            <span>·</span><span>7 days ago</span>
+          </div>
+        </li>
+        
+      </ul>
+      
+    </div>
+
+    <div class="card span-4">
+      <h2>CDC US snapshot</h2>
+      <div class="stats-mini">
+        <div class="stat"><div class="v">890</div>
+          <div class="k">Total cases</div></div>
+        <div class="stat"><div class="v">35%</div>
+          <div class="k">Fatality rate</div></div>
+        <div class="stat"><div class="v">859</div>
+          <div class="k">HPS cases</div></div>
+        <div class="stat"><div class="v">94%</div>
+          <div class="k">West of Miss.</div></div>
+      </div>
+      <p style="color: var(--muted); margin-top:12px; font-size: 12px;">
+        Surveillance period 1993 – 2023.
+        Median age 38, 62% male.
+        <a href="https://www.cdc.gov/hantavirus/data-research/cases/index.html" target="_blank" rel="noopener">Source: CDC</a>.
+      </p>
+    </div>
+
+    <div class="card span-12">
+      <h2>News &amp; press · last 0 items</h2>
+      
+    </div>
+  </div>
+
+  <footer>
+    <a href="about.html">About / Disclaimer</a> ·
+    <a href="symptoms.html">Symptoms</a> &#183;
+    <a href="cruise-2026.html">Cruise Ship 2026</a> &#183;
+    <a href="privacy.html">Privacy</a> &#183;
+    <a href="terms.html">Terms</a><br>
+    Sources: <a href="https://promedmail.org/?s=hantavirus" target="_blank" rel="noopener">ProMED-mail</a>,
+    <a href="https://news.google.com/search?q=hantavirus" target="_blank" rel="noopener">Google News</a>,
+    <a href="https://www.cdc.gov/hantavirus/data-research/cases/index.html" target="_blank" rel="noopener">CDC HPS surveillance</a>.
+    Raw data: <a href="data.json">data.json</a>.
+    Code: <a href="https://github.com/M041997/hantavirus-tracker" target="_blank" rel="noopener">GitHub</a>.
+    <span style="color:#ff6b6b;">⚠ Not a medical resource — see <a href="https://www.cdc.gov/hantavirus/" target="_blank" rel="noopener">CDC</a> for guidance.</span>
+  </footer>
+</div>
+
+<script>
+  // Server-rendered data dump for the map.
+  window.HANTA = {
+    countries: [{"country": "Argentina", "lat": -38.4, "lng": -63.6, "count": 10, "latest_title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION", "latest_url": "https://www.promedmail.org/?s=hantavirus", "latest_date": "1 day ago", "items": [{"title": "HANTAVIRUS - ARGENTINA (19): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, DISEMBARKATION", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "1 day ago"}, {"title": "HANTAVIRUS - ARGENTINA (18): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, POST-SHIP CASES AND SURVEILLANCE", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "1 day ago"}, {"title": "HANTAVIRUS (06) \u2013 ARGENTINA: BROTE EN ALTAMAR, INFORMACI\u00d3N SOBRE EL PACIENTE CERO", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "2 days ago"}, {"title": "HANTAVIRUS (05) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISI\u00d3N MEDIANTE CONTACTO NO ESTRECHO", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "4 days ago"}, {"title": "HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "4 days ago"}, {"title": "HANTAVIRUS - ARGENTINA (17): CRUISE SHIP, SOUTH ATLANTIC, OUTBREAK, FATAL, WHO RESPONSE, POST-SHIP CASE", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "4 days ago"}]}, {"country": "Taiwan", "lat": 23.7, "lng": 121.0, "count": 1, "latest_title": "HANTAVIRUS - TAIWAN (03): (TAIPEI) RAT INFESTATION, HUMAN, FATAL, NORMAL RANGE, RODENT CONTROL", "latest_url": "https://www.promedmail.org/?s=hantavirus", "latest_date": "2 days ago", "items": [{"title": "HANTAVIRUS - TAIWAN (03): (TAIPEI) RAT INFESTATION, HUMAN, FATAL, NORMAL RANGE, RODENT CONTROL", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "2 days ago"}]}, {"country": "South Africa", "lat": -30.6, "lng": 22.9, "count": 1, "latest_title": "HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS", "latest_url": "https://www.promedmail.org/?s=hantavirus", "latest_date": "4 days ago", "items": [{"title": "HANTAVIRUS - SOUTH AFRICA: ex ARGENTINA, CRUISE SHIP, MONITORING CONTACTS OF HANTAVIRUS PATIENTS", "url": "https://www.promedmail.org/?s=hantavirus", "source": "ProMED-mail", "published": "4 days ago"}]}],
+    arcs:      [{"from": "Argentina", "to": "Texas", "from_latlng": [-38.4, -63.6], "to_latlng": [31.5, -99.3], "label": "TX residents on cruise, returned"}, {"from": "Argentina", "to": "Nebraska", "from_latlng": [-38.4, -63.6], "to_latlng": [41.5, -99.8], "label": "Federal quarantine \u2014 Nebraska Medicine"}, {"from": "Argentina", "to": "New Jersey", "from_latlng": [-38.4, -63.6], "to_latlng": [40.2, -74.5], "label": "NJDOH monitoring air-travel contacts"}, {"from": "Argentina", "to": "California", "from_latlng": [-38.4, -63.6], "to_latlng": [36.8, -119.4], "label": "Passengers monitored on return"}, {"from": "Argentina", "to": "Arizona", "from_latlng": [-38.4, -63.6], "to_latlng": [34.2, -111.7], "label": "Passengers monitored on return"}, {"from": "Argentina", "to": "Chile", "from_latlng": [-38.4, -63.6], "to_latlng": [-35.7, -71.5], "label": "Cruise stopover"}, {"from": "Argentina", "to": "Brazil", "from_latlng": [-38.4, -63.6], "to_latlng": [-14.2, -51.9], "label": "Cruise stopover"}, {"from": "Argentina", "to": "Canary Islands", "from_latlng": [-38.4, -63.6], "to_latlng": [28.3, -15.5], "label": "Hondius port of disembarkation"}, {"from": "Argentina", "to": "South Africa", "from_latlng": [-38.4, -63.6], "to_latlng": [-30.6, 22.9], "label": "Contacts monitored on stopover"}],
+    vessel:    {"name": "MV Hondius", "operator": "Oceanwide Expeditions", "imo": "9818709", "mmsi": "244327000", "flag": "Netherlands", "departed_from": "Ushuaia, Argentina", "departed_at": "2026-04-01", "tracker_url": "https://www.cruisemapper.com/ships/MV-Hondius-1624", "vesselfinder_url": "https://www.vesselfinder.com/vessels/details/9818709", "marinetraffic_url": "https://www.marinetraffic.com/en/ais/details/ships/shipid:5873599/mmsi:244327000/imo:9818709/vessel:HONDIUS", "position": {"lat": 31.46173, "lng": -14.73513, "heading_deg": 17.0, "fetched_at": "2026-05-12T14:57:32Z"}, "counts": {"cases_total": 7, "cases_confirmed": 2, "cases_suspected": 5, "deaths": 3, "critical": 1, "on_board": 147, "passengers": 88, "crew": 59, "as_of": "2026-05-04", "source": "WHO DON599", "source_url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON599", "fetched_at": "2026-05-12T14:57:34Z"}, "track": [{"lat": 18.988, "lng": -21.12, "fetched_at": "2026-05-07T19:34:00Z"}, {"lat": 22.484, "lng": -19.355, "fetched_at": "2026-05-08T15:43:45Z"}, {"lat": 23.331, "lng": -18.926, "fetched_at": "2026-05-08T21:03:33Z"}, {"lat": 23.35961, "lng": -18.91158, "fetched_at": "2026-05-08T21:16:15Z"}, {"lat": 23.51273, "lng": -18.83061, "fetched_at": "2026-05-08T22:08:11Z"}, {"lat": 23.84758, "lng": -18.65935, "fetched_at": "2026-05-09T00:06:01Z"}, {"lat": 24.59444, "lng": -18.27289, "fetched_at": "2026-05-09T04:30:25Z"}, {"lat": 25.10726, "lng": -18.0078, "fetched_at": "2026-05-09T07:17:49Z"}, {"lat": 25.49981, "lng": -17.807568333333332, "fetched_at": "2026-05-09T09:40:51Z"}, {"lat": 25.72282, "lng": -17.69591, "fetched_at": "2026-05-09T11:06:30Z"}, {"lat": 26.19046, "lng": -17.4559, "fetched_at": "2026-05-09T13:46:05Z"}, {"lat": 26.41884, "lng": -17.34315, "fetched_at": "2026-05-09T15:03:57Z"}, {"lat": 26.59258, "lng": -17.25388, "fetched_at": "2026-05-09T16:04:51Z"}, {"lat": 26.76171, "lng": -17.16796, "fetched_at": "2026-05-09T17:08:51Z"}, {"lat": 27.13789, "lng": -16.97533, "fetched_at": "2026-05-09T19:17:02Z"}, {"lat": 27.31942, "lng": -16.88195, "fetched_at": "2026-05-09T20:57:04Z"}, {"lat": 27.4241, "lng": -16.82684, "fetched_at": "2026-05-09T21:56:29Z"}, {"lat": 27.52196, "lng": -16.77905, "fetched_at": "2026-05-09T22:58:14Z"}, {"lat": 27.61851, "lng": -16.72976, "fetched_at": "2026-05-09T23:58:15Z"}, {"lat": 27.99756, "lng": -16.53217, "fetched_at": "2026-05-10T04:07:08Z"}, {"lat": 28.07329, "lng": -16.49035, "fetched_at": "2026-05-10T07:31:04Z"}, {"lat": 28.07362, "lng": -16.49148, "fetched_at": "2026-05-10T09:45:49Z"}, {"lat": 28.07367, "lng": -16.49153, "fetched_at": "2026-05-10T11:07:48Z"}, {"lat": 28.07418, "lng": -16.49112, "fetched_at": "2026-05-10T13:02:36Z"}, {"lat": 28.0739, "lng": -16.49142, "fetched_at": "2026-05-10T13:49:27Z"}, {"lat": 28.0738, "lng": -16.49146, "fetched_at": "2026-05-10T15:04:37Z"}, {"lat": 28.0737, "lng": -16.49159, "fetched_at": "2026-05-10T16:06:01Z"}, {"lat": 28.07279, "lng": -16.49106, "fetched_at": "2026-05-10T17:58:55Z"}, {"lat": 28.0729, "lng": -16.49127, "fetched_at": "2026-05-10T19:18:28Z"}, {"lat": 28.07275, "lng": -16.49102, "fetched_at": "2026-05-10T20:59:55Z"}, {"lat": 28.07276, "lng": -16.49105, "fetched_at": "2026-05-10T21:57:59Z"}, {"lat": 28.07272, "lng": -16.4908, "fetched_at": "2026-05-10T23:00:21Z"}, {"lat": 28.07274, "lng": -16.49044, "fetched_at": "2026-05-11T00:02:14Z"}, {"lat": 28.07274, "lng": -16.49041, "fetched_at": "2026-05-11T04:19:30Z"}, {"lat": 28.07279, "lng": -16.49082, "fetched_at": "2026-05-11T08:31:16Z"}, {"lat": 28.07412, "lng": -16.49057, "fetched_at": "2026-05-11T12:19:53Z"}, {"lat": 28.07473, "lng": -16.48994, "fetched_at": "2026-05-11T16:09:44Z"}, {"lat": 28.07639, "lng": -16.48684, "fetched_at": "2026-05-11T18:06:55Z"}, {"lat": 28.01398, "lng": -16.31723, "fetched_at": "2026-05-11T19:05:15Z"}, {"lat": 28.21373, "lng": -16.04511, "fetched_at": "2026-05-11T20:52:38Z"}, {"lat": 28.43566, "lng": -15.82828, "fetched_at": "2026-05-11T22:16:06Z"}, {"lat": 28.75466, "lng": -15.62808, "fetched_at": "2026-05-12T00:06:54Z"}, {"lat": 29.61057, "lng": -15.34577, "fetched_at": "2026-05-12T04:43:52Z"}, {"lat": 30.20376, "lng": -15.15485, "fetched_at": "2026-05-12T07:50:55Z"}, {"lat": 30.72568, "lng": -14.97996, "fetched_at": "2026-05-12T10:39:52Z"}, {"lat": 31.13528, "lng": -14.8461, "fetched_at": "2026-05-12T13:10:17Z"}, {"lat": 31.46173, "lng": -14.73513, "fetched_at": "2026-05-12T14:57:32Z"}]}
+  };
+</script>
+<script>
+(() => {
+  const map = L.map('map', {
+    zoomControl: true,
+    attributionControl: true,
+    worldCopyJump: true,
+    minZoom: 2,
+    maxZoom: 6,
+    maxBounds: [[-72, -200], [82, 200]],
+  }).setView([20, 0], 2);
+
+  // Satellite imagery — clearly a globe (matches the Plague Inc. vibe).
+  L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    {
+      attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, GIS User Community',
+      maxZoom: 18,
+    }
+  ).addTo(map);
+
+  // Country boundaries + labels overlay so countries are unmistakable.
+  L.tileLayer(
+    'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    {
+      attribution: '',
+      maxZoom: 18,
+      opacity: 0.85,
+    }
+  ).addTo(map);
+
+  // Subtle dark wash so red markers pop against bright satellite imagery.
+  const tint = L.rectangle(
+    [[-90, -360], [90, 360]],
+    { color: '#000', fillColor: '#0a1828', fillOpacity: 0.25, weight: 0,
+      interactive: false }
+  ).addTo(map);
+
+  // ----- Markers -----
+  const maxCount = Math.max(1, ...window.HANTA.countries.map(c => c.count));
+
+  const escape = s => String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+
+  const popupHtml = (c) => {
+    const items = c.items.map(i => `
+      <li>
+        <div class="src">${escape(i.source)} · ${escape(i.published || '')}</div>
+        <a href="${escape(i.url)}" target="_blank" rel="noopener">${escape(i.title)}</a>
+      </li>`).join('');
+    return `
+      <div class="popup-title">${escape(c.country)}</div>
+      <div class="popup-meta">${c.count} reports · last ${escape(c.latest_date || '')}</div>
+      <ul class="popup-list">${items}</ul>`;
+  };
+
+  window.HANTA.countries.forEach(c => {
+    const big = c.count >= Math.max(3, maxCount * 0.5);
+    const icon = L.divIcon({
+      className: '',
+      html: `<div class="pulse-marker ${big ? 'large' : ''}">
+               <div class="ring"></div><div class="core"></div>
+             </div>`,
+      iconSize: [14, 14],
+      iconAnchor: [7, 7],
+    });
+    L.marker([c.lat, c.lng], { icon, title: `${c.country} · ${c.count} reports` })
+      .bindPopup(popupHtml(c), { maxWidth: 320 })
+      .addTo(map);
+  });
+
+  // ----- Spread arcs (great-circle approximation) -----
+  const greatCircle = (a, b, segs = 64) => {
+    // Convert to radians
+    const toRad = d => d * Math.PI / 180;
+    const toDeg = r => r * 180 / Math.PI;
+    const [lat1, lon1] = a.map(toRad);
+    const [lat2, lon2] = b.map(toRad);
+    const d = 2 * Math.asin(Math.sqrt(
+      Math.sin((lat2 - lat1)/2) ** 2 +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin((lon2 - lon1)/2) ** 2
+    ));
+    if (d === 0) return [a, b];
+    const pts = [];
+    for (let i = 0; i <= segs; i++) {
+      const f = i / segs;
+      const A = Math.sin((1 - f) * d) / Math.sin(d);
+      const B = Math.sin(f * d) / Math.sin(d);
+      const x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
+      const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.sin(lon2);
+      const z = A * Math.sin(lat1) + B * Math.sin(lat2);
+      const lat = Math.atan2(z, Math.sqrt(x*x + y*y));
+      const lon = Math.atan2(y, x);
+      pts.push([toDeg(lat), toDeg(lon)]);
+    }
+    return pts;
+  };
+
+  window.HANTA.arcs.forEach(arc => {
+    const path = greatCircle(arc.from_latlng, arc.to_latlng);
+    L.polyline(path, { className: 'spread-arc' })
+      .bindTooltip(`${arc.from} → ${arc.to}<br><span style="color:#8a99ab">${arc.label}</span>`, {
+        direction: 'top', sticky: true, opacity: 0.95,
+      })
+      .addTo(map);
+  });
+
+  // ----- MV Hondius live position -----
+  if (window.HANTA.vessel && window.HANTA.vessel.position) {
+    const v = window.HANTA.vessel;
+    const p = v.position;
+    if (Array.isArray(v.track) && v.track.length >= 2) {
+      const trackPoints = v.track.map(t => [t.lat, t.lng]);
+      L.polyline(trackPoints, {
+        color: '#ffb84d',
+        weight: 2,
+        opacity: 0.7,
+        dashArray: '4 5',
+        className: 'ship-track',
+      }).addTo(map);
+    }
+    const shipIcon = L.divIcon({
+      className: '',
+      html: `<div class="ship-marker"
+                  ${p.heading_deg != null
+                    ? `style="transform: rotate(${p.heading_deg}deg)"` : ''}>
+               <div class="ring"></div><div class="body">⚓</div>
+             </div>`,
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+    });
+    const fetched = p.fetched_at
+      ? new Date(p.fetched_at).toUTCString().replace('GMT', 'UTC')
+      : '';
+    const heading = p.heading_deg != null
+      ? `${Math.round(p.heading_deg)}°` : '—';
+    L.marker([p.lat, p.lng], {
+      icon: shipIcon,
+      title: `${v.name} · last AIS ${fetched}`,
+      zIndexOffset: 1000,
+    })
+      .bindPopup(`
+        <div class="popup-title">${escape(v.name)}</div>
+        <div class="popup-meta">
+          ${escape(v.operator)} · IMO ${escape(v.imo)} · MMSI ${escape(v.mmsi)}
+        </div>
+        <div style="font-size: 12px; line-height: 1.6;">
+          <div><strong>Position:</strong> ${p.lat.toFixed(3)}°,
+            ${p.lng.toFixed(3)}°</div>
+          <div><strong>Heading:</strong> ${heading}</div>
+          <div><strong>Last AIS fix:</strong> ${escape(fetched)}</div>
+          <div><strong>Departed:</strong>
+            ${escape(v.departed_from)} · ${escape(v.departed_at)}</div>
+          <div style="margin-top: 8px;">
+            <a href="${escape(v.tracker_url)}" target="_blank" rel="noopener">
+              CruiseMapper</a> ·
+            <a href="${escape(v.vesselfinder_url)}" target="_blank" rel="noopener">
+              VesselFinder</a> ·
+            <a href="${escape(v.marinetraffic_url)}" target="_blank" rel="noopener">
+              MarineTraffic</a>
+          </div>
+        </div>
+      `, { maxWidth: 320 })
+      .addTo(map);
+  }
+
+  // Fit to data bounds if any markers, else default world view.
+  const allPoints = [
+    ...window.HANTA.countries.map(c => [c.lat, c.lng]),
+  ];
+  if (window.HANTA.vessel && window.HANTA.vessel.position) {
+    allPoints.push([
+      window.HANTA.vessel.position.lat,
+      window.HANTA.vessel.position.lng,
+    ]);
+  }
+  if (allPoints.length) {
+    const bounds = L.latLngBounds(allPoints);
+    map.fitBounds(bounds.pad(0.4), { maxZoom: 3 });
+  }
+})();
+</script>
+
+<!-- Google Translate -->
+<div id="google_translate_element" style="position:fixed;top:12px;right:12px;z-index:9999;"></div>
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'zh-CN,zh-TW,es,fr,de,ja,ko,pt,ru,ar,hi,it,nl,pl,tr,vi,th,id',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+      autoDisplay: true
+    }, 'google_translate_element');
+  }
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<style>
+  .goog-te-gadget-simple {
+    background-color: rgba(19,26,35,0.9) !important;
+    border: 1px solid #28323e !important;
+    border-radius: 8px !important;
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    color: #8a99ab !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  }
+  .goog-te-gadget-simple .goog-te-menu-value {
+    color: #8a99ab !important;
+  }
+  .goog-te-gadget-simple .goog-te-menu-value span {
+    color: #8a99ab !important;
+  }
+  .goog-te-banner-frame { display: none !important; }
+  body { top: 0 !important; }
+  .goog-te-menu-value img { filter: brightness(1.5); }
+  /* removed global .skiptranslate hide to fix dropdown */
+  #google_translate_element .skiptranslate { display: block !important; }
+</style>
+
+</body>
+</html>
