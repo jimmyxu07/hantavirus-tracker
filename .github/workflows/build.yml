@@ -1,0 +1,57 @@
+name: build
+
+on:
+  schedule:
+    # Hourly at :05 to avoid the top-of-hour cron stampede on GitHub.
+    - cron: "5 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Build site
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          GOATCOUNTER_CODE: ${{ vars.GOATCOUNTER_CODE }}
+        run: python build.py
+
+      # We don't commit the regenerated docs/ back to the repo — the
+      # Pages artifact deploy is the source of truth. This avoids races
+      # with manual pushes during development.
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
