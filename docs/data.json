@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-12T14:57:34Z",
+  "generated_at": "2026-05-19T13:21:46Z",
   "outbreaks": [
     {
       "country": "Argentina",
@@ -32,13 +32,13 @@
           "published": "1 day ago"
         },
         {
-          "title": "HANTAVIRUS (06) \u2013 ARGENTINA: BROTE EN ALTAMAR, INFORMACI\u00d3N SOBRE EL PACIENTE CERO",
+          "title": "HANTAVIRUS (06) – ARGENTINA: BROTE EN ALTAMAR, INFORMACIÓN SOBRE EL PACIENTE CERO",
           "url": "https://www.promedmail.org/?s=hantavirus",
           "source": "ProMED-mail",
           "published": "2 days ago"
         },
         {
-          "title": "HANTAVIRUS (05) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISI\u00d3N MEDIANTE CONTACTO NO ESTRECHO",
+          "title": "HANTAVIRUS (05) – ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISIÓN MEDIANTE CONTACTO NO ESTRECHO",
           "url": "https://www.promedmail.org/?s=hantavirus",
           "source": "ProMED-mail",
           "published": "4 days ago"
@@ -117,7 +117,7 @@
         41.5,
         -99.8
       ],
-      "label": "Federal quarantine \u2014 Nebraska Medicine"
+      "label": "Federal quarantine — Nebraska Medicine"
     },
     {
       "from": "Argentina",
@@ -209,6 +209,32 @@
         22.9
       ],
       "label": "Contacts monitored on stopover"
+    },
+    {
+      "from": "Argentina",
+      "to": "France",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        46.2,
+        2.2
+      ],
+      "label": "Repatriated passenger, confirmed case"
+    },
+    {
+      "from": "Argentina",
+      "to": "Spain",
+      "from_latlng": [
+        -38.4,
+        -63.6
+      ],
+      "to_latlng": [
+        40.4,
+        -3.7
+      ],
+      "label": "Hondius port of disembarkation & confirmed case"
     }
   ],
   "vessel": {
@@ -223,25 +249,46 @@
     "vesselfinder_url": "https://www.vesselfinder.com/vessels/details/9818709",
     "marinetraffic_url": "https://www.marinetraffic.com/en/ais/details/ships/shipid:5873599/mmsi:244327000/imo:9818709/vessel:HONDIUS",
     "position": {
-      "lat": 31.46173,
-      "lng": -14.73513,
-      "heading_deg": 17.0,
-      "fetched_at": "2026-05-12T14:57:32Z"
+      "lat": 38.63998,
+      "lng": -12.23102,
+      "heading_deg": 14.6,
+      "speed_knots": 0.0,
+      "fetched_at": "2026-05-14T06:14:28Z",
+      "provider": "fallback"
     },
     "counts": {
-      "cases_total": 7,
-      "cases_confirmed": 2,
-      "cases_suspected": 5,
+      "cases_total": 11,
+      "cases_confirmed": 8,
+      "cases_suspected": 2,
+      "cases_inconclusive": 1,
       "deaths": 3,
-      "critical": 1,
-      "on_board": 147,
-      "passengers": 88,
-      "crew": 59,
-      "as_of": "2026-05-04",
-      "source": "WHO DON599",
-      "source_url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON599",
-      "fetched_at": "2026-05-12T14:57:34Z"
-    }
+      "critical": 0,
+      "on_board": 25,
+      "passengers": 0,
+      "crew": 25,
+      "as_of": "2026-05-13",
+      "source": "WHO DON601",
+      "source_url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON601",
+      "fetched_at": "2026-05-19T13:21:46Z"
+    },
+    "track": [
+      {
+        "lat": 31.46173,
+        "lng": -14.73513,
+        "fetched_at": "2026-05-14T04:14:33Z"
+      },
+      {
+        "lat": 38.26135,
+        "lng": -12.3693,
+        "fetched_at": "2026-05-14T04:09:00Z"
+      },
+      {
+        "lat": 38.63998,
+        "lng": -12.23102,
+        "fetched_at": "2026-05-14T06:14:28Z"
+      }
+    ],
+    "speed_knots": 11.5
   },
   "cdc_snapshot": {
     "as_of": "2023-12-31",
@@ -275,13 +322,13 @@
       "published": "2026-05-10"
     },
     {
-      "title": "HANTAVIRUS (06) \u2013 ARGENTINA: BROTE EN ALTAMAR, INFORMACI\u00d3N SOBRE EL PACIENTE CERO",
+      "title": "HANTAVIRUS (06) – ARGENTINA: BROTE EN ALTAMAR, INFORMACIÓN SOBRE EL PACIENTE CERO",
       "url": "https://www.promedmail.org/?s=hantavirus",
       "source": "ProMED-mail",
       "published": "2026-05-10"
     },
     {
-      "title": "HANTAVIRUS (05) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISI\u00d3N MEDIANTE CONTACTO NO ESTRECHO",
+      "title": "HANTAVIRUS (05) – ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, VIRUS ANDES, TRANSMISIÓN MEDIANTE CONTACTO NO ESTRECHO",
       "url": "https://www.promedmail.org/?s=hantavirus",
       "source": "ProMED-mail",
       "published": "2026-05-08"
@@ -305,7 +352,7 @@
       "published": "2026-05-07"
     },
     {
-      "title": "HANTAVIRUS (04) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, CONFIRMACI\u00d3N DE VIRUS ANDES",
+      "title": "HANTAVIRUS (04) – ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, CONFIRMACIÓN DE VIRUS ANDES",
       "url": "https://www.promedmail.org/?s=hantavirus",
       "source": "ProMED-mail",
       "published": "2026-05-07"
@@ -317,7 +364,7 @@
       "published": "2026-05-06"
     },
     {
-      "title": "HANTAVIRUS (03) \u2013 ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, AUMENTO DE CASOS",
+      "title": "HANTAVIRUS (03) – ARGENTINA: BROTE EN ALTAMAR, MUERTES, BARCO CRUCERO, AUMENTO DE CASOS",
       "url": "https://www.promedmail.org/?s=hantavirus",
       "source": "ProMED-mail",
       "published": "2026-05-05"
