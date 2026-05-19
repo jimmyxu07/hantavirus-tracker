@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19T13:21:46Z",
+  "generated_at": "2026-05-19T13:44:07Z",
   "outbreaks": [
     {
       "country": "Argentina",
@@ -249,12 +249,12 @@
     "vesselfinder_url": "https://www.vesselfinder.com/vessels/details/9818709",
     "marinetraffic_url": "https://www.marinetraffic.com/en/ais/details/ships/shipid:5873599/mmsi:244327000/imo:9818709/vessel:HONDIUS",
     "position": {
-      "lat": 38.63998,
-      "lng": -12.23102,
-      "heading_deg": 14.6,
+      "lat": 51.95389,
+      "lng": 4.15449,
+      "heading_deg": 130.0,
       "speed_knots": 0.0,
-      "fetched_at": "2026-05-14T06:14:28Z",
-      "provider": "fallback"
+      "fetched_at": "2026-05-19T13:44:08Z",
+      "provider": "myshiptracking_api"
     },
     "counts": {
       "cases_total": 11,
@@ -269,7 +269,7 @@
       "as_of": "2026-05-13",
       "source": "WHO DON601",
       "source_url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON601",
-      "fetched_at": "2026-05-19T13:21:46Z"
+      "fetched_at": "2026-05-19T13:44:07Z"
     },
     "track": [
       {
@@ -286,6 +286,16 @@
         "lat": 38.63998,
         "lng": -12.23102,
         "fetched_at": "2026-05-14T06:14:28Z"
+      },
+      {
+        "lat": 51.95388,
+        "lng": 4.15446,
+        "fetched_at": "2026-05-19T13:42:26Z"
+      },
+      {
+        "lat": 51.95389,
+        "lng": 4.15449,
+        "fetched_at": "2026-05-19T13:44:08Z"
       }
     ],
     "speed_knots": 11.5

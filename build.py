@@ -275,7 +275,7 @@ def inject_into_index_html(data: dict) -> None:
         html,
     )
     html = re.sub(
-        r'<div style="font-size: 13px; color: var\(--good\);">\s*2026-05-12 14:57 UTC\s*</div>',
+        r'<div style="font-size: 13px; color: var\(--good\);">\s*[\d-]+\s+[\d:]+ UTC\s*</div>',
         f'<div style="font-size: 13px; color: var(--good);">\n              {datetime.fromisoformat(pos.get("fetched_at", now).replace("Z", "+00:00")).strftime("%Y-%m-%d %H:%M UTC")}\n            </div>',
         html,
     )
