@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceptable Use Policy — Hantavirus Map</title>
+  <style>
+    :root {
+      --bg: #0a0e14;
+      --surface: #111820;
+      --text: #e8eef5;
+      --muted: #94a3b8;
+      --accent: #e63946;
+      --border: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 800px; margin: 0 auto; padding: 48px 20px; }
+    header { margin-bottom: 32px; }
+    .back { font-size: 14px; color: var(--muted); }
+    h1 { font-size: 32px; margin: 8px 0 24px; letter-spacing: -0.5px; }
+    h2 { font-size: 20px; margin: 32px 0 12px; color: #fff; }
+    p, li { color: #cbd5e1; }
+    ul { padding-left: 22px; }
+    li { margin: 6px 0; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 16px;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(230,57,70,0.15);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      margin-bottom: 12px;
+    }
+    footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="back"><a href="https://hantavirusmap.site">← Back to Hantavirus Map</a></div>
+      <h1>Acceptable Use Policy</h1>
+      <div class="badge">Last updated: May 2026</div>
+    </header>
+
+    <div class="card">
+      <p>This policy sets rules for using <strong>Hantavirus Map</strong> and its resources.</p>
+
+      <h2>Allowed use</h2>
+      <ul>
+        <li>Browsing the map and reading aggregated case information.</li>
+        <li>Sharing links to the Site with proper attribution.</li>
+        <li>Citing data in research, journalism, or public health work, with credit to WHO, CDC, ProMED-mail, or other original sources.</li>
+        <li>Inspecting the open-source code and contributing improvements via GitHub.</li>
+      </ul>
+
+      <h2>Prohibited use</h2>
+      <ul>
+        <li><strong>Scraping or bulk extraction:</strong> Automated collection of Site content, map data, or source files is prohibited.</li>
+        <li><strong>Abuse of APIs and tiles:</strong> You may not hammer Esri tile servers, GoatCounter, or GitHub Pages with excessive automated requests.</li>
+        <li><strong>Resale or republication:</strong> You may not repackage or sell Site data as a standalone product without permission from the original data owners.</li>
+        <li><strong>Commercial surveillance:</strong> Using the Site to build surveillance or marketing databases is not allowed.</li>
+        <li><strong>Attribution removal:</strong> Removing or obscuring data-source attribution is prohibited.</li>
+        <li><strong>Illegal activity:</strong> Any use that violates applicable laws or regulations.</li>
+      </ul>
+
+      <h2>Data source terms</h2>
+      <p>Our data providers (WHO, CDC, ProMED-mail, and others) have their own terms. You must comply with those terms when using the underlying data, even if obtained through our Site.</p>
+
+      <h2>Enforcement</h2>
+      <p>We may block abusive traffic, revoke access, or report misuse to hosting providers and data partners. Because the Site is static, technical enforcement is limited to blocking patterns at the CDN or repository level.</p>
+
+      <h2>Reporting abuse</h2>
+      <p>To report misuse, contact us via the GitHub repository or the method listed on <a href="https://hantavirusmap.site">hantavirusmap.site</a>.</p>
+    </div>
+
+    <footer>
+      © Hantavirus Map. Data attribution: WHO / CDC / ProMED-mail.
+    </footer>
+  </div>
+</body>
+</html>
