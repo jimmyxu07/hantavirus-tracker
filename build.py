@@ -118,8 +118,46 @@ def fetch_ais_myshiptracking_scrape(mmsi: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+def fetch_ais_cruisemapper_scrape() -> Optional[Dict[str, Any]]:
+    """Fallback scrape of CruiseMapper ship page for lat/lon/heading."""
+    url = "https://www.cruisemapper.com/ships/MV-Hondius-1624"
+    try:
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (compatible; HantavirusMapBot/1.0)"
+        })
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            html = resp.read().decode("utf-8", errors="ignore")
+
+        # Look for shipCurrentPositionMap JSON snippet
+        m = re.search(
+            r'"shipCurrentPositionMap"\s*:\s*\{[^}]*"lat"\s*:\s*([\d.]+)[^}]*"lon"\s*:\s*([-\d.]+)[^}]*"rotation"\s*:\s*([\d.]+)',
+            html,
+        )
+        if not m:
+            # Relaxed fallback
+            m = re.search(
+                r'"lat"\s*:\s*([\d.]+)[^}]*"lon"\s*:\s*([-\d.]+)[^}]*"rotation"\s*:\s*([\d.]+)',
+                html,
+            )
+        if m:
+            lat = float(m.group(1))
+            lng = float(m.group(2))
+            heading = float(m.group(3))
+            return {
+                "lat": round(lat, 5),
+                "lng": round(lng, 5),
+                "heading_deg": round(heading, 1),
+                "speed_knots": 0.0,
+                "fetched_at": now_iso(),
+                "provider": "cruisemapper_scrape",
+            }
+    except Exception as e:
+        print(f"[AIS] CruiseMapper scrape failed: {e}")
+    return None
+
+
 def fetch_ais(mmsi: str = "244327000") -> Dict[str, Any]:
-    """Try API first, then scrape, then fallback to last known."""
+    """Try API first, then CruiseMapper scrape, then fallback to last known."""
     api_key = os.environ.get("MYSHIPTRACKING_API_KEY", "")
     if api_key:
         pos = fetch_ais_myshiptracking_api(mmsi, api_key)
@@ -127,9 +165,9 @@ def fetch_ais(mmsi: str = "244327000") -> Dict[str, Any]:
             print(f"[AIS] Updated via MyShipTracking API: {pos['lat']}, {pos['lng']}")
             return pos
 
-    pos = fetch_ais_myshiptracking_scrape(mmsi)
+    pos = fetch_ais_cruisemapper_scrape()
     if pos:
-        print(f"[AIS] Updated via MyShipTracking scrape: {pos['lat']}, {pos['lng']}")
+        print(f"[AIS] Updated via CruiseMapper scrape: {pos['lat']}, {pos['lng']}")
         return pos
 
     # Fallback: keep existing position from data.json but preserve original timestamp

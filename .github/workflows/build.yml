@@ -35,6 +35,7 @@ jobs:
         env:
           SITE_URL: ${{ vars.SITE_URL }}
           GOATCOUNTER_CODE: ${{ vars.GOATCOUNTER_CODE }}
+          MYSHIPTRACKING_API_KEY: ${{ secrets.MYSHIPTRACKING_API_KEY }}
         run: python build.py
 
       # We don't commit the regenerated docs/ back to the repo — the
