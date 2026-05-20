@@ -14,6 +14,7 @@ Environment variables:
 import json
 import os
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -293,6 +294,8 @@ def inject_into_index_html(data: dict) -> None:
         "arcs": data.get("spread_arcs", []),
         "vessel": vessel,
     }, ensure_ascii=False)
+    # XSS hardening: escape </script> inside JSON before injecting into HTML
+    hanta_json = hanta_json.replace("</script>", "<\\/script>")
 
     html = re.sub(
         r'window\.HANTA = \{[\s\S]*?\};',
@@ -331,32 +334,40 @@ def git_commit_and_push() -> None:
         return
 
     # Configure git for CI
-    os.system('git config user.email "deploy@hantavirusmap.site"')
-    os.system('git config user.name "HantavirusMap Deploy"')
+    subprocess.run(["git", "config", "user.email", "deploy@hantavirusmap.site"], check=False)
+    subprocess.run(["git", "config", "user.name", "HantavirusMap Deploy"], check=False)
 
     # Add changed files
-    os.system("git add docs/data.json docs/index.html docs/cruise-2026.html")
+    subprocess.run(["git", "add", "docs/data.json", "docs/index.html", "docs/cruise-2026.html"], check=False)
 
     # Check if there is anything to commit
-    diff = os.popen("git diff --cached --quiet || echo changed").read().strip()
-    if diff != "changed":
+    result = subprocess.run(
+        ["git", "diff", "--cached", "--quiet"],
+        capture_output=True,
+    )
+    if result.returncode == 0:
         print("[git] No changes to commit.")
         return
 
-    ret = os.system(f'git commit -m "Auto-update data.json + index.html @ {now_iso()}"')
+    ret = subprocess.run(
+        ["git", "commit", "-m", f"Auto-update data.json + index.html @ {now_iso()}"],
+    ).returncode
     if ret != 0:
         print("[git] Commit failed.")
         return
 
     # Push using the token embedded in the remote URL
-    remote_url = os.popen("git remote get-url origin").read().strip()
+    remote_url = subprocess.run(
+        ["git", "remote", "get-url", "origin"],
+        capture_output=True, text=True,
+    ).stdout.strip()
     # Replace any existing token or use the provided one
     if "github.com" in remote_url:
         # Build authenticated URL
         auth_url = f"https://x-access-token:{token}@github.com/jimmyxu07/hantavirus-tracker.git"
-        os.system(f"git remote set-url origin {auth_url}")
+        subprocess.run(["git", "remote", "set-url", "origin", auth_url], check=False)
 
-    ret = os.system("git push origin main")
+    ret = subprocess.run(["git", "push", "origin", "main"]).returncode
     if ret == 0:
         print("[git] Pushed successfully.")
     else:

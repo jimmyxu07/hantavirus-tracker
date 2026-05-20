@@ -407,7 +407,7 @@
       <ul>
         {% for i in ob.news[:4] %}
         <li>
-          <a href="{{ i.url }}" target="_blank" rel="noopener">{{ i.title|unescape }}</a>
+          <a href="{{ i.url }}" target="_blank" rel="noopener">{{ i.title }}</a>
           <div class="meta">{{ i.source }}{% if i.published %} · {{ i.published }}{% endif %}</div>
         </li>
         {% endfor %}
@@ -564,7 +564,7 @@
         {% for item in promed_items %}
         <li>
           <div class="title">
-            <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title|unescape }}</a>
+            <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title }}</a>
           </div>
           <div class="row">
             <span class="src promed">{{ item.source }}</span>
@@ -604,7 +604,7 @@
         {% for item in ecdc_items %}
         <li>
           <div class="title">
-            <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title|unescape }}</a>
+            <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title }}</a>
           </div>
           <div class="row">
             <span class="src ecdc">{{ item.source }}</span>
@@ -625,7 +625,7 @@
         {% for item in news_items %}
         <li>
           <div class="title">
-            <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title|unescape }}</a>
+            <a href="{{ item.url }}" target="_blank" rel="noopener">{{ item.title }}</a>
           </div>
           <div class="row">
             <span class="src">{{ item.source }}</span>
