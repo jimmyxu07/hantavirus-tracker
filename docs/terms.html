@@ -15,124 +15,132 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><text y=%2250%22 font-size=%2256%22>&#129440;</text></svg>">
 <style>
   :root {
-    --bg: #0a0e14; --panel: #131a23; --ink: #e8eef5; --muted: #8a99ab;
-    --accent: #ff3b3b; --accent-2: #ffb84d; --line: #28323e;
+    --bg: #0a0e14; --surface: #111820; --text: #e8eef5; --muted: #94a3b8;
+    --accent: #e63946; --border: #1e293b;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
-    background: var(--bg); color: var(--ink);
-    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.7;
   }
-  a { color: #7cc1ff; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
-  header { margin-bottom: 30px; }
-  h1 { margin: 0 0 6px; font-size: 28px; letter-spacing: -0.02em; }
-  h1 .dot {
-    display: inline-block; width: 10px; height: 10px; border-radius: 50%;
-    background: var(--accent); margin-right: 10px;
-    box-shadow: 0 0 0 4px rgba(255,59,59,.18);
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 800px; margin: 0 auto; padding: 48px 20px; }
+  header { margin-bottom: 32px; }
+  .back { font-size: 14px; color: var(--muted); }
+  .back a { color: var(--muted); }
+  h1 { font-size: 32px; margin: 8px 0 24px; letter-spacing: -0.5px; }
+  h2 { font-size: 20px; margin: 32px 0 12px; color: #fff; }
+  p, li { color: #cbd5e1; }
+  ul { padding-left: 22px; }
+  li { margin: 6px 0; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px; margin-top: 16px;
   }
-  h2 { margin-top: 36px; font-size: 18px; letter-spacing: 0.02em;
-       text-transform: uppercase; color: var(--accent-2); }
-  .crumb { color: var(--muted); font-size: 13px; }
-  .crumb a { color: var(--muted); }
-  .panel {
-    background: var(--panel); border: 1px solid var(--line);
-    border-radius: 12px; padding: 16px 20px; margin: 12px 0;
+  .badge {
+    display: inline-block; background: rgba(230,57,70,0.15);
+    color: var(--accent); padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.3px; margin-bottom: 12px;
   }
-  .danger {
-    border-color: #4a1e22; background: linear-gradient(135deg, #1d1218, #131a23);
+  .alert-box {
+    background: linear-gradient(135deg, rgba(230,57,70,0.12), rgba(230,57,70,0.04));
+    border: 1px solid rgba(230,57,70,0.3); border-radius: 12px;
+    padding: 20px; margin: 16px 0;
   }
-  ul li { margin-bottom: 8px; }
+  .alert-box strong { color: #fff; }
   footer {
-    margin-top: 50px; color: var(--muted); font-size: 12px;
-    border-top: 1px solid var(--line); padding-top: 16px;
+    margin-top: 48px; padding-top: 24px;
+    border-top: 1px solid var(--border); font-size: 13px; color: var(--muted);
   }
+  footer a { color: var(--muted); text-decoration: underline; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="crumb"><a href="./">&#8592; back to map</a></div>
+<div class="container">
   <header>
-    <h1><span class="dot"></span>Terms & Disclaimer</h1>
+    <div class="back"><a href="https://hantavirusmap.site">&#8592; Back to Hantavirus Map</a></div>
+    <h1>Terms & Disclaimer</h1>
+    <div class="badge">Last updated: May 2026</div>
   </header>
 
-  <div class="panel danger">
-    <strong>&#9888; Medical Disclaimer</strong><br><br>
-    HantavirusMap.site is an <strong>information aggregator</strong>, not a
-    medical or public health authority. Nothing on this website constitutes
-    medical advice, diagnosis, treatment recommendations, or official outbreak
-    declarations.<br><br>
-    If you believe you have been exposed to hantavirus or are experiencing
-    symptoms, <strong>contact a qualified healthcare provider or your local
-    health authority immediately</strong>. For authoritative guidance, visit the
-    <a href="https://www.cdc.gov/hantavirus/" target="_blank" rel="noopener">CDC</a>
-    or <a href="https://www.who.int/health-topics/hantavirus" target="_blank" rel="noopener">WHO</a>.
+  <div class="card">
+    <div class="alert-box">
+      <strong>&#9888; Medical Disclaimer</strong><br><br>
+      HantavirusMap.site is an <strong>information aggregator</strong>, not a
+      medical or public health authority. Nothing on this website constitutes
+      medical advice, diagnosis, treatment recommendations, or official outbreak
+      declarations.<br><br>
+      If you believe you have been exposed to hantavirus or are experiencing
+      symptoms, <strong>contact a qualified healthcare provider or your local
+      health authority immediately</strong>. For authoritative guidance, visit the
+      <a href="https://www.cdc.gov/hantavirus/" target="_blank" rel="noopener">CDC</a>
+      or <a href="https://www.who.int/health-topics/hantavirus" target="_blank" rel="noopener">WHO</a>.
+    </div>
+
+    <h2>1. No warranty</h2>
+    <p>
+      All content, data, and maps are provided <strong>"as is"</strong> without
+      warranty of any kind, express or implied. We do not guarantee accuracy,
+      completeness, timeliness, or reliability of the outbreak data displayed.
+    </p>
+
+    <h2>2. Data sources & accuracy</h2>
+    <p>
+      Data is aggregated from publicly available sources including ProMED-mail,
+      Google News RSS feeds, and CDC publications. Country detection is
+      automated using keyword matching and may contain errors. Geographic
+      coordinates are approximate population-weighted centroids, not exact
+      outbreak locations.
+    </p>
+
+    <h2>3. Intellectual property</h2>
+    <p>
+      The underlying tracker code is open source and available on GitHub.
+      Outbreak data belongs to its respective original sources (WHO, CDC,
+      ProMED-mail, news outlets). Maps are rendered using Leaflet and Esri
+      World Imagery tiles.
+    </p>
+
+    <h2>4. Limitation of liability</h2>
+    <p>
+      Under no circumstances shall the operators of HantavirusMap.site be
+      liable for any direct, indirect, incidental, or consequential damages
+      arising from the use of or inability to use this site.
+    </p>
+
+    <h2>5. External links</h2>
+    <p>
+      This site contains links to external websites. We are not responsible
+      for the content, privacy practices, or availability of those sites.
+    </p>
+
+    <h2>6. Changes to terms</h2>
+    <p>
+      We may update these terms at any time. Continued use of the site after
+      changes constitutes acceptance of the revised terms.
+    </p>
+
+    <h2>7. Governing law</h2>
+    <p>
+      These terms are governed by the laws of the jurisdiction in which the
+      site operator resides, without regard to conflict of law principles.
+    </p>
+
+    <h2>8. Contact</h2>
+    <p>
+      For questions about these terms, open an issue on the project repository
+      or contact <a href="mailto:support@hantavirusmap.site">support@hantavirusmap.site</a>.
+    </p>
   </div>
-
-  <h2>1. No warranty</h2>
-  <p>
-    All content, data, and maps are provided <strong>"as is"</strong> without
-    warranty of any kind, express or implied. We do not guarantee accuracy,
-    completeness, timeliness, or reliability of the outbreak data displayed.
-  </p>
-
-  <h2>2. Data sources & accuracy</h2>
-  <p>
-    Data is aggregated from publicly available sources including ProMED-mail,
-    Google News RSS feeds, and CDC publications. Country detection is
-    automated using keyword matching and may contain errors. Geographic
-    coordinates are approximate population-weighted centroids, not exact
-    outbreak locations.
-  </p>
-
-  <h2>3. Intellectual property</h2>
-  <p>
-    The underlying tracker code is open source and available on GitHub.
-    Outbreak data belongs to its respective original sources (WHO, CDC,
-    ProMED-mail, news outlets). Maps are rendered using Leaflet and Esri
-    World Imagery tiles.
-  </p>
-
-  <h2>4. Limitation of liability</h2>
-  <p>
-    Under no circumstances shall the operators of HantavirusMap.site be
-    liable for any direct, indirect, incidental, or consequential damages
-    arising from the use of or inability to use this site.
-  </p>
-
-  <h2>5. External links</h2>
-  <p>
-    This site contains links to external websites. We are not responsible
-    for the content, privacy practices, or availability of those sites.
-  </p>
-
-  <h2>6. Changes to terms</h2>
-  <p>
-    We may update these terms at any time. Continued use of the site after
-    changes constitutes acceptance of the revised terms.
-  </p>
-
-  <h2>7. Governing law</h2>
-  <p>
-    These terms are governed by the laws of the jurisdiction in which the
-    site operator resides, without regard to conflict of law principles.
-  </p>
-
-  <h2>8. Contact</h2>
-  <p>
-    For questions about these terms, open an issue on the project repository
-    or contact <a href="mailto:support@hantavirusmap.site">support@hantavirusmap.site</a>.
-  </p>
 
   <footer>
     <a href="./">Back to map</a> &#183;
     <a href="about.html">About</a> &#183;
     <a href="privacy.html">Privacy</a> &#183;
     <a href="symptoms.html">Symptoms</a><br>
-    HantavirusMap.site — for awareness only. Not a medical resource.
+    HantavirusMap.site &mdash; for awareness only. Not a medical resource.
   </footer>
 </div>
 
@@ -159,16 +167,11 @@
     color: #8a99ab !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
   }
-  .goog-te-gadget-simple .goog-te-menu-value {
-    color: #8a99ab !important;
-  }
-  .goog-te-gadget-simple .goog-te-menu-value span {
-    color: #8a99ab !important;
-  }
+  .goog-te-gadget-simple .goog-te-menu-value { color: #8a99ab !important; }
+  .goog-te-gadget-simple .goog-te-menu-value span { color: #8a99ab !important; }
   .goog-te-banner-frame { display: none !important; }
   body { top: 0 !important; }
   .goog-te-menu-value img { filter: brightness(1.5); }
-  /* removed global .skiptranslate hide to fix dropdown */
   #google_translate_element .skiptranslate { display: block !important; }
 </style>
 
