@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-19T13:44:07Z",
+  "generated_at": "2026-05-24T14:19:22Z",
   "outbreaks": [
     {
       "country": "Argentina",
@@ -251,10 +251,10 @@
     "position": {
       "lat": 51.95389,
       "lng": 4.15449,
-      "heading_deg": 130.0,
+      "heading_deg": 0.0,
       "speed_knots": 0.0,
-      "fetched_at": "2026-05-19T13:44:08Z",
-      "provider": "myshiptracking_api"
+      "fetched_at": "2026-05-24T14:19:29Z",
+      "provider": "cruisemapper_scrape"
     },
     "counts": {
       "cases_total": 11,
@@ -269,7 +269,7 @@
       "as_of": "2026-05-13",
       "source": "WHO DON601",
       "source_url": "https://www.who.int/emergencies/disease-outbreak-news/item/2026-DON601",
-      "fetched_at": "2026-05-19T13:44:07Z"
+      "fetched_at": "2026-05-24T14:19:22Z"
     },
     "track": [
       {
