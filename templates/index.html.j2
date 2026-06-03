@@ -390,42 +390,6 @@
   @media (max-width: 900px) {
     .sidebar, .sidebar-toggle { display: none !important; }
   }
-
-  /* ---------- Adsterra ads ---------- */
-  .ad-banner {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-  }
-  .ad-728x90 {
-    margin: 18px auto;
-    max-width: 728px;
-    padding: 8px;
-  }
-  .ad-300x250 {
-    margin: 18px auto;
-    max-width: 300px;
-    padding: 8px;
-  }
-  .ad-320x50 {
-    margin: 18px auto;
-    max-width: 320px;
-    padding: 8px;
-  }
-  .ad-native {
-    margin: 0;
-    padding: 8px;
-    min-height: 120px;
-  }
-  .ad-320x50 { display: none; }
-  @media (max-width: 767px) {
-    .ad-728x90, .ad-300x250 { display: none; }
-    .ad-320x50 { display: flex; }
-  }
 </style>
 
 <!-- Privacy-friendly analytics by Plausible -->
@@ -520,20 +484,6 @@
   <div class="hud hud-bc">
     Click a marker · drag to pan · scroll to zoom
   </div>
-</div>
-
-<!-- Adsterra 728x90 -->
-<div class="ad-banner ad-728x90">
-  <script>
-    atOptions = {
-      'key' : '3f7616face76c157ff4f1321d589d87b',
-      'format' : 'iframe',
-      'height' : 90,
-      'width' : 728,
-      'params' : {}
-    };
-  </script>
-  <script src="https://www.highperformanceformat.com/3f7616face76c157ff4f1321d589d87b/invoke.js"></script>
 </div>
 
 <div class="wrap">
@@ -701,39 +651,6 @@
       {% endif %}
     </div>
 
-    <!-- Adsterra NativeBanner -->
-    <div class="card span-12 ad-banner ad-native">
-      <script async="async" data-cfasync="false" src="https://pl29625884.effectivecpmnetwork.com/611334cab99eb53f683b1a89de743eae/invoke.js"></script>
-      <div id="container-611334cab99eb53f683b1a89de743eae"></div>
-    </div>
-  </div>
-
-  <!-- Adsterra 300x250 (desktop) -->
-  <div class="ad-banner ad-300x250">
-    <script>
-      atOptions = {
-        'key' : 'ba5d69199347332f8d566c2d644721d8',
-        'format' : 'iframe',
-        'height' : 250,
-        'width' : 300,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highperformanceformat.com/ba5d69199347332f8d566c2d644721d8/invoke.js"></script>
-  </div>
-
-  <!-- Adsterra 320x50 (mobile) -->
-  <div class="ad-banner ad-320x50">
-    <script>
-      atOptions = {
-        'key' : '7f3e04b5b587f31581f414fc6dac0629',
-        'format' : 'iframe',
-        'height' : 50,
-        'width' : 320,
-        'params' : {}
-      };
-    </script>
-    <script src="https://www.highperformanceformat.com/7f3e04b5b587f31581f414fc6dac0629/invoke.js"></script>
   </div>
 
   <footer>
